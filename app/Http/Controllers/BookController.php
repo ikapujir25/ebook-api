@@ -15,7 +15,7 @@ class BookController extends Controller
      */
     public function index()
     {
-        //
+        //return Book::all(); => ini bentuk lain dari yang index
         return Book::get();
     }
 
@@ -80,3 +80,9 @@ class BookController extends Controller
         return Book::destroy($id);
     }
 }
+/*
+    Cara mengecek versi laravel:
+    1. buka file composer.json
+    2. buka gitbash dengan perintah php artisan version
+    Perintah php artisan route:list = mengecek route yang dijalankan
+ */
