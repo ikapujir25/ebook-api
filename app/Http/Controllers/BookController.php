@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 
 use App\Book;
+use JWTAuth;
 
 class BookController extends Controller
 {
@@ -16,7 +17,16 @@ class BookController extends Controller
     public function index()
     {
         //return Book::all(); => ini bentuk lain dari yang index
-        return Book::get();
+        $book = Book::all();
+        if($book && $book->count()){
+            return response(["message" => "Show data success", "data" => $book], 200);
+        }else{
+            return response(["message" => "Data not found", "data" => null ], 404);
+        }
+    }
+
+    public function __construct() {
+        $this->middleware('auth:api');
     }
 
     /**
@@ -28,13 +38,14 @@ class BookController extends Controller
     public function store(Request $request)
     {
         //
-        return Book::create([
+        $book = Book::create([
             "tittle" => $request -> tittle,
             "description" => $request -> description,
             "author" => $request -> author,
             "publisher" => $request -> publisher,
             "date_of_issue" => $request -> date_of_issue,
         ]);
+        return response(["message" => "Create data success", "data" => $book], 201);
     }
 
     /**
@@ -46,7 +57,7 @@ class BookController extends Controller
     public function show($id)
     {
         //
-        return Book::find($id);
+        $book = Book::find($id);
     }
 
     /**
@@ -59,13 +70,14 @@ class BookController extends Controller
     public function update(Request $request, $id)
     {
         //
-        return Book::find($id)->update([
+        $book = Book::find($id)->update([
             "tittle" => $request -> tittle,
             "description" => $request -> description,
             "author" => $request -> author,
             "publisher" => $request -> publisher,
             "date_of_issue" => $request -> date_of_issue,
         ]);
+        return response(["message" => "Update data success", "data" => $book], 201);
     }
 
     /**
@@ -77,7 +89,8 @@ class BookController extends Controller
     public function destroy($id)
     {
         //
-        return Book::destroy($id);
+        $book = Book::destroy($id);
+        return response(["message" => "Delete data success", "data" => $book], 201);
     }
 }
 /*
